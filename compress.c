@@ -7,6 +7,11 @@
 
 #define ZLIB_INTERNAL
 #include "zlib.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int length = 0;
 
 /* ===========================================================================
      Compresses the source buffer into the destination buffer. The level
@@ -83,4 +88,15 @@ uLong ZEXPORT compressBound (sourceLen)
 {
     return sourceLen + (sourceLen >> 12) + (sourceLen >> 14) +
            (sourceLen >> 25) + 13;
+}
+
+char* string_compress(char* s) {
+
+    uLong ucompSize = strlen(s) + 1;
+    uLong compSize = compressBound(ucompSize);
+    char *out = malloc(compSize + 1);
+
+    compress((Bytef *)out, &compSize, (Bytef *)s, ucompSize);
+
+    return out;
 }
